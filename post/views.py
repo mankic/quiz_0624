@@ -26,6 +26,10 @@ class JobView(APIView):
     def post(self, request):
         job_type = int( request.data.get("job_type", None) )
         company_name = request.data.get("company_name", None)
+        job_type_table = JobType.objects.filter(id=job_type)
+        if not job_type_table.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(job_type, status=status.HTTP_200_OK)
+
 
